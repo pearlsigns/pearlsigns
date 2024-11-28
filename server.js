@@ -12,7 +12,7 @@ var favicon = require('serve-favicon');
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 //app.listen(8080, '10.0.0.62');
-//app.listen(8080);
+app.listen(8080);
 
 
 
@@ -60,4 +60,3 @@ app.post('/firebase/quote', function(req, res){
     
 });
 
-module.exports.handler = serverless(app);
