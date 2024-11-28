@@ -1,7 +1,7 @@
 var express = require('express');
 const ejs = require('ejs');
 const firebase = require('./firebase/firebase');
-
+const router = express.Router();
 
 var app = express();
 app.use(express.json());
@@ -12,9 +12,10 @@ var favicon = require('serve-favicon');
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 //app.listen(8080, '10.0.0.62');
-app.listen(8080);
+//app.listen(8080);
+module.exports.handler = serverless(app);
 
-
+app.use("/.netlify/functions/app", router);
 
 
 // *** GET Routes - display pages ***
