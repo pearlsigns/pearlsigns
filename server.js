@@ -1,12 +1,19 @@
 var express = require('express');
 const ejs = require('ejs');
-const serverless = require("serverless-http");
 const firebase = require('./firebase/firebase');
 
 var app = express();
 app.use(express.json());
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
+
+var forceSsl = function (req, res, next) {
+    if (req.headers['x-forwarded-proto'] !== 'https') {
+        return res.redirect(['https://', req.get('Host'), req.url].join(''));
+    }
+    return next();
+ };
+ app.use(forceSsl);
 
 var favicon = require('serve-favicon');
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
