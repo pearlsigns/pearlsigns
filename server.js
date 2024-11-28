@@ -1,5 +1,6 @@
 var express = require('express');
 const ejs = require('ejs');
+const serverless = require("serverless-http");
 const firebase = require('./firebase/firebase');
 const router = express.Router();
 
