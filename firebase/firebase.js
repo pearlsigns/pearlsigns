@@ -1,6 +1,6 @@
 const firebase = require("firebase/app");
 const { getAuth, signInWithEmailAndPassword } = require("firebase/auth");
-const { getDatabase, ref, set, get } = require("firebase/database");
+const { getDatabase, ref, set, onValue, get } = require("firebase/database");
 
 
 
