@@ -1,25 +1,20 @@
-var express = require('express');
+const express = require('express');
+require('dotenv').config()
 const ejs = require('ejs');
 const firebase = require('./firebase/firebase');
+const PORT = process.env.PORT || 8080;
 
 var app = express();
 app.use(express.json());
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
-var forceSsl = function (req, res, next) {
-    if (req.headers['x-forwarded-proto'] !== 'https') {
-        return res.redirect(['https://', req.get('Host'), req.url].join(''));
-    }
-    return next();
- };
- app.use(forceSsl);
-
 var favicon = require('serve-favicon');
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
-//app.listen(8080, '10.0.0.62');
-app.listen(8080);
+app.listen(PORT)
+console.log("App started on "+ PORT)
+//app.listen(8080);
 
 
 
@@ -59,11 +54,11 @@ app.post('/firebase/auth', function(req, res){
 
 app.post('/firebase/visit', async function(req, res){
     firebase.updateVisits();
-    console.log("Someone viited")
     res.json({"message": "ok"});
 });
 
 app.post('/firebase/quote', function(req, res){
-    
+    firebase.requestQuote(req.body.name, req.body.phone, req.body.service, req.body.message)
+    res.json({"message":"ok"});
 });
 

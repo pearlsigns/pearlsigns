@@ -39,31 +39,31 @@
 
 			<div class="row block-9">
 				<div class="col-md-8">
-					<form action="" class="p-4 p-md-5 contact-form">
+					<form class="p-4 p-md-5 contact-form">
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Your Name">
+									<input type="text" id="name" class="form-control" placeholder="Your Name">
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Your Email">
+									<input type="text" id="email" class="form-control" placeholder="Your Email">
 								</div>
 							</div>
 							<div class="col-md-12">
 								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Subject">
+									<input type="text" id="Subject" class="form-control" placeholder="Subject">
 								</div>
 							</div>
 							<div class="col-md-12">
 								<div class="form-group">
-									<textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
+									<textarea name="" id="message" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
 								</div>
 							</div>
 							<div class="col-md-12">
 								<div class="form-group">
-									<input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
+									<input type="submit" id="generalsubmit" value="Send Message" class="btn btn-primary py-3 px-5">
 								</div>
 							</div>
 						</div>
@@ -109,58 +109,8 @@
 	<%- include('./partials/footer', {pageTitle:'Contact'}) %>
 
 		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true" class="fa fa-close"></span>
-						</button>
-					</div>
-					<div class="modal-body p-4 p-md-5">
-						<form action="javascript:alert('Hello there, I am being submitted');" class="appointment-form ftco-animate" name="inquiryForm">
-							<h3>Request Quote</h3>
-							<div class="">
-								<div class="form-group">
-									<input type="text" class="form-control" placeholder="First Name">
-								</div>
-								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Last Name">
-								</div>
-								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Phone">
-								</div>
-							</div>
-							<div class="">
-								<div class="form-group">
-									<div class="form-field">
-										<div class="select-wrap">
-											<div class="icon"><span class="fa fa-chevron-down"></span></div>
-											<select name="" id="" class="form-control">
-												<option value="">Select Your Services</option>
-												<option value="">Design</option>
-												<option value="">Renovation</option>
-												<option value="">Fabrication</option>
-												<option value="">Interior &amp; Exterior</option>
-												<option value="">Chemical Research</option>
-												<option value="">Petroleum &amp; Gas</option>
-												<option value="">Other Services</option>
-											</select>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="">
-								<div class="form-group">
-									<textarea name="" id="" cols="30" rows="4" class="form-control" placeholder="Message"></textarea>
-								</div>
-								<div class="form-group">
-									<input type="submit" value="Request A Quote" class="btn btn-primary py-3 px-4">
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
+			<%- include('./partials/modal') %>
+
 		</div>
 
 		<!-- loader -->
@@ -184,6 +134,40 @@
 		
 		<script src="js/main.js"></script>
 		<script src="js/firebase.js"></script>
-		
+		<script>
+			document.getElementById('generalsubmit').addEventListener('click', async () => {
+				const authButton = document.getElementById('generalsubmit');
+				const name = document.getElementById('name').value;
+				const phone = document.getElementById('email').value;
+				const service = document.getElementById('subject').value;
+				const message = document.getElementById('message').value;
+	
+				console.log(name)
+				console.log(phone)
+				// Disable the button to prevent multiple clicks
+				authButton.disabled = true;
+				authButton.value = "Authenticating...";
+				try {
+					const payload = {'name': name, 'phone':phone, 'service':service, 'message':message};
+					const response = await fetch('/firebase/quote', {
+						method: 'POST', // Use POST since /auth is a POST endpoint
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify(payload)
+					});
+	
+				} catch (error) {
+					console.error('Error calling /auth:', error);
+				}
+				authButton.value = "Success!";
+				setTimeout(() => {
+					document.getElementById('name').value = ""; 
+					document.getElementById('email').value = "";
+					document.getElementById('subject').value = "";
+					document.getElementById('message').value = "";
+					authButton.disabled = false;
+					authButton.value = "Send Message!";
+				}, 2000)
+			});
+		</script>
 	</body>
 	</html>

@@ -1,0 +1,42 @@
+<header>
+    <div class="form-group">
+        <input id="submitRequest" type="submit" value="Request A Quote" class="btn btn-primary py-3 px-4">
+    </div>
+
+    <script>
+        document.getElementById('submitRequest').addEventListener('click', async () => {
+            const authButton = document.getElementById('submitRequest');
+            const name = document.getElementById('fname').value + document.getElementById('lname').value;
+            const phone = document.getElementById('phone').value;
+            const service = document.getElementById('service').value;
+            const message = document.getElementById('message').value;
+
+            console.log(name)
+            console.log(phone)
+            // Disable the button to prevent multiple clicks
+            authButton.disabled = true;
+            authButton.value = "Authenticating...";
+            try {
+                const payload = {'name': name, 'phone':phone, 'service':service, 'message':message};
+                const response = await fetch('/firebase/quote', {
+                    method: 'POST', // Use POST since /auth is a POST endpoint
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+            } catch (error) {
+                console.error('Error calling /auth:', error);
+            }
+            authButton.value = "Success!";
+            setTimeout(() => {
+                document.getElementById('fname').value = ""; 
+                document.getElementById('lname').value = "";
+                document.getElementById('phone').value = "";
+                document.getElementById('service').value = "";
+                document.getElementById('message').value = "";
+                authButton.disabled = false;
+                authButton.value = "Request A Quote ";
+            }, 2000)
+        });
+    </script>
+</header>
