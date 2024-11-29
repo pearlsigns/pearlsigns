@@ -1,8 +1,6 @@
-const  {initializeApp } = require("firebase/app");
+const { initializeApp } = require("firebase/app");
 const { getAuth, signInWithEmailAndPassword } = require("firebase/auth");
 const { getDatabase, ref, set, onValue, get } = require("firebase/database");
-
-
 
 // Firebase configuration object
 const firebaseConfig = {
@@ -60,11 +58,11 @@ const requestQuote = (name, phone, service, message) => {
 };
 
 const fetchData = async () => {
-  if(authentication.currentUser!=null){
+  if (authentication.currentUser != null) {
     const quotesRef = ref(database, 'requests');
     const snapshot = await get(quotesRef)
     return snapshot.val();
-  }else return '';
+  } else return '';
 }
 
 // Export the functions
