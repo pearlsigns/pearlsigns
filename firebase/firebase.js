@@ -1,4 +1,4 @@
-const firebase = require("firebase/app");
+const  {initializeApp } = require("firebase/app");
 const { getAuth, signInWithEmailAndPassword } = require("firebase/auth");
 const { getDatabase, ref, set, onValue, get } = require("firebase/database");
 
@@ -16,7 +16,7 @@ const firebaseConfig = {
   measurementId: process.env.measurementId
 };
 
-const app = firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const authentication = getAuth(app);
 
