@@ -2,14 +2,13 @@
 <html lang="en">
 
 <head>
-    <title>Pure CSS Login Form</title>
+    <title>Login</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="css/auth.css" />
 </head>
 
 <body>
-
     <div class="container">
         <div class="center">
             <h1>Login</h1>
@@ -31,19 +30,47 @@
     <script>
         document.getElementById('authButton').addEventListener('click', async () => {
             const authButton = document.getElementById('authButton');
+            const uname = document.getElementById('uname').value;
+            const pword = document.getElementById('pword').value;
+
+            if(uname == ""|| uname == null || pword == ""|| pword == null )
+            {
+                window.alert("Fields cannot be empty")
+                return;
+            }   
             // Disable the button to prevent multiple clicks
             authButton.disabled = true;
             authButton.value = "Authenticating...";
-            try {
-                // Call /auth endpoint
-                const response = await fetch('/firebase/auth', {
-                    method: 'POST', // Use POST since /auth is a POST endpoint
-                    headers: { 'Content-Type': 'application/json' }
-                });
-            } catch (error) {
-                console.error('Error calling /auth:', error);
-            }
 
+            try {
+					const payload = {'uname': uname, 'pword': pword };
+					const response = await fetch('/firebase/auth', {
+						method: 'POST', // Use POST since /auth is a POST endpoint
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify(payload)
+					});
+                    response.json().then((user) => {
+                        if(user != null)
+                        window.location.href = '/firebase/data'
+                        console.log(user)
+                    }); 
+
+				} catch (error) {
+					console.error('Error calling /auth:', error);
+                    window.alert("Login failed")
+                    setTimeout(() => {
+					document.getElementById('uname').value = ""; 
+					document.getElementById('pword').value = "";
+					authButton.disabled = false;
+					authButton.value = "Login";
+				}, 2000)				}
+				authButton.value = "Success!";
+				setTimeout(() => {
+					document.getElementById('uname').value = ""; 
+					document.getElementById('pword').value = "";
+					authButton.disabled = false;
+					authButton.value = "Login";
+				}, 2000)
         });
     </script>
 </body>

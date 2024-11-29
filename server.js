@@ -49,7 +49,8 @@ app.get('/auth', function (req, res) {
 });
 
 app.post('/firebase/auth', function(req, res){
-    res.json({"message": "ok"});
+    firebase.signInUser(req.body.uname, req.body.pword).then((uid) => {
+        res.json({"user": uid});    })
 });
 
 app.post('/firebase/visit', async function(req, res){
@@ -62,3 +63,12 @@ app.post('/firebase/quote', function(req, res){
     res.json({"message":"ok"});
 });
 
+app.post('/firebase/requests', function(req, res){
+    firebase.fetchData().then((snapshot) => {
+        res.json(snapshot);
+    })
+});
+
+app.get('/firebase/data', function(req, res){
+        res.render('./pages/data');
+});

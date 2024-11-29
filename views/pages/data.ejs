@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Database</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/auth.css" />
+    <style>
+        table {
+            color: #f4f4f4;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #1b003a3f;
+            padding: 8px;
+        }
+        th {
+            background-color: #3604042a;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <table id="dataTable">
+        <thead>
+            <tr>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        generateTable = (json) => {
+            
+            const table = document.getElementById('dataTable');
+            const thead = table.querySelector('thead');
+            const tbody = table.querySelector('tbody');
+
+            // Clear existing table data
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+
+            // Extract keys for the headers
+            const keys = Object.keys(Object.values(json)[0]);
+
+            // Create table headers
+            const headerRow = document.createElement('tr');
+            headerRow.innerHTML = `<th>ID</th>`; // Add ID as the first column
+            keys.forEach(key => {
+                headerRow.innerHTML += `<th>${key}</th>`;
+            });
+            thead.appendChild(headerRow);
+
+            // Create table rows
+            Object.keys(json).forEach(id => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${id}</td>`; // Add ID as the first column
+                keys.forEach(key => {
+                    row.innerHTML += `<td>${json[id][key]}</td>`;
+                });
+                tbody.appendChild(row);
+            });
+        }
+            fetchData = async () => {
+            try {
+                const response = await fetch('/firebase/requests', {
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }
+            });  
+                var json = await response.json();
+                generateTable(json);
+                //generateTable(response);
+				} catch (error) {
+					console.error('Error calling /requests:', error);
+				}
+        }
+        // Generate the table on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchData();
+        });
+
+    </script>
+</body>
+</html>
