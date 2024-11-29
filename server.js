@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config()
 const ejs = require('ejs');
 const firebase = require('./firebase/firebase');
+const tw = require('./twilio/twilio');
 const PORT = process.env.PORT || 8080;
 
 var app = express();
@@ -10,6 +11,7 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 var favicon = require('serve-favicon');
+const { Twilio } = require('twilio');
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 app.listen(PORT)
@@ -60,6 +62,8 @@ app.post('/firebase/visit', async function(req, res){
 
 app.post('/firebase/quote', function(req, res){
     firebase.requestQuote(req.body.name, req.body.phone, req.body.service, req.body.message)
+    const messagebuilder = "From: " + req.body.name + "\nContact: " + req.body.phone + "\nSubject: " + req.body.service + "\nMessage: " + req.body.message;  
+    tw.sendMessage(messagebuilder);
     res.json({"message":"ok"});
 });
 
@@ -72,3 +76,4 @@ app.post('/firebase/requests', function(req, res){
 app.get('/firebase/data', function(req, res){
         res.render('./pages/data');
 });
+

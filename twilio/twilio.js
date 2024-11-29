@@ -1,15 +1,26 @@
-// Your AccountSID and Auth Token from console.twilio.com
 
-const client = require('twilio')(process.env.TWILIO_ACC_SSID, process.env.TWILIO_AUTH_TOKEN);
+const twilio = require("twilio"); // Or, for ESM: import twilio from "twilio";
 
-const sendMessage = () => {
-  client.messages
-    .create({
-      body: 'Hello from twilio-node',
-      to: '+14379722799', // Text your number
-      from: '+17753209966', // From a valid Twilio number
-    })
-    .then((message) => console.log(message.sid));
+const accountSid = process.env.TWILIO_ACC_SSID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const myPhone = process.env.MY_PHONE
+const twPhone = process.env.TW_PHONE
+
+const client = twilio(accountSid, authToken);
+
+const sendMessage = (msgbody) => {
+  try {
+    client.messages
+      .create({
+        body: msgbody,
+        to: 'whatsapp:+'+myPhone, // Text your number
+        from: 'whatsapp:+'+twPhone, // From a valid Twilio number
+      })
+      .then((message) => console.log(message.sid));
+  } catch (e) {
+    throw e;
+  }
 }
 
-module.exports = {sendMessage}
+
+module.exports = { sendMessage }
