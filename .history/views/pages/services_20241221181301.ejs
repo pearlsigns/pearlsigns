@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Pearl Signs - Professional Business Signage</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="css/animate.css">
+
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <link rel="stylesheet" href="css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="css/magnific-popup.css">
+
+  <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+  <link rel="stylesheet" href="css/jquery.timepicker.css">
+
+  <link rel="stylesheet" href="css/flaticon.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <%- include('./partials/header', {pageTitle:'Services'}) %>
+
+  <%- include('./partials/wide', {pageTitle:'Services', imgurl:'images/services-box.jpg'}) %>
+
+	<section class="ftco-section bg-half-light">
+		<div class="container">
+			<div class="row justify-content-center mb-5 pb-2">
+				<div class="col-md-8 text-center heading-section ftco-animate">
+					<span class="subheading">Our Services</span>
+					<h2 class="mb-4">Services We Offer...</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<%- include('./partials/servicecard', {imgurl:'images/blender-design.jpeg', header:'Design',description:'We specialize in graphic design for businesses and signage, creating visually striking designs that communicate your brand’s message with clarity and impact. Our team of skilled designers combines creativity with strategic thinking to deliver designs that are not only eye-catching but also functional and aligned with your brand identity.  '}) %>     
+				</div>
+				<div class="col-md-4">
+					<%- include('./partials/servicecard', {imgurl:'images/services/truck.jpeg', header:'Sign Construction',description:'We specialize in sign construction with a focus on durability, precision, and craftsmanship. From concept to completion, we handle every step of the process in-house, ensuring unmatched quality and attention to detail. Our team takes pride in manufacturing pylon signs from scratch, using premium materials and advanced techniques to create structures that are not only visually striking but also built to withstand the elements.'}) %>     
+				</div>
+				<div class="col-md-4">
+					<%- include('./partials/servicecard', {imgurl:'images/services/obtaining-permits.jpeg', header:'Permits & Regulations',description:'We handle the city sign permit process from start to finish, ensuring a smooth and hassle-free experience for our clients. Our experienced team manages every step, from preparing accurate sign drawings and documentation to submitting applications and coordinating with local authorities. We stay up-to-date with municipal regulations and zoning requirements, guaranteeing your signage complies with all codes and standards. '}) %>     
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<%- include('./partials/servicecard', {imgurl:'images/CNC MACHINE.jpg', header:'CNC & Fabrication',description:'Our high-precision in-house CNC operations ensure every sign we produce meets the highest standards of accuracy and quality. Utilizing state-of-the-art CNC machinery, we can create intricate designs, precise cuts, and flawless finishes across a variety of materials. By keeping our CNC operations in-house, we maintain complete control over the production process, guaranteeing consistency and quick turnaround times.'}) %>     
+				</div>
+				<div class="col-md-4">
+					<%- include('./partials/servicecard', {imgurl:'images/laser-cutter.png', header:'Laser Cutting & Engraving',description:'Our high-precision in-house laser cutting and engraving services deliver exceptional detail and accuracy on every project. Using advanced laser technology, we can create intricate designs, sharp cuts, and precise engravings on a variety of materials, including metal, wood, acrylic, and more. Keeping our laser cutting and engraving operations in-house allows us to maintain full control over quality, consistency, and turnaround times.'}) %>     
+				</div>
+				<div class="col-md-4">
+					<%- include('./partials/servicecard', {imgurl:'images/services/wide-format-printing.jpg', header:'Large Format Printing',description:'Our in-house large format printing services utilize high-quality UV printing technology to deliver stunning visuals with exceptional durability. Capable of producing high-resolution prints on a wide range of materials, we ensure every detail is crisp, vibrant, and long-lasting. Whether you need banners, signage, or custom graphics in various sizes, our advanced UV printing process guarantees consistent results with quick turnaround times.'}) %>     
+				</div>
+			</div>
+      <div class="row">
+				<div class="col-md-4">
+					<%- include('./partials/servicecard', {imgurl:'images/services/sign-lighting-solutions.jpg', header:'Sign Lighting Solutions',description:'We specialize in retrofitting old fluorescent lighting signs with modern energy-efficient LED technology. By upgrading outdated lighting systems, we not only reduce energy consumption and maintenance costs but also significantly improve the brightness and visibility of your signage. '}) %>     
+				</div>
+				<div class="col-md-4">
+					<%- include('./partials/servicecard', {imgurl:'images/channel-letters.jpeg', header:'Channel Letters',description:'We specialize in crafting custom LED-lit channel letters that make your brand shine. Our vibrant, energy-efficient LED lighting ensures your signage stands out both day and night, delivering maximum visibility and impact. '}) %>     
+				</div>
+				<div class="col-md-4">
+					<%- include('./partials/servicecard', {imgurl:'images/led-neon-sign.jpeg', header:'Custom LED Neon Signs',description:'We create stunning custom LED neon signs that are as bright, vibrant, and colorful as your brand’s personality. Combining the classic charm of traditional neon with modern, energy-efficient LED technology, our signs offer eye-catching illumination with long-lasting performance. Each sign is custom-designed and crafted in-house.'}) %>     
+				</div>
+			</div>
+      <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Request A Quote</a>
+		</div>
+	</section>
+
+    <%- include('./partials/footer', {pageTitle:'Services'}) %>     
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<%- include('./partials/modal') %>
+
+    </div>
+
+
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+        <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+        <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+          stroke="#F96D00" />
+      </svg></div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
+    <script src="js/jquery.waypoints.min.js"></script>
+    <script src="js/jquery.stellar.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery.animateNumber.min.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
+    <script src="js/jquery.timepicker.min.js"></script>
+    <script src="js/scrollax.min.js"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+    <script src="js/google-map.js"></script>
+
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Pearl Signs - Professional Business Signage</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<link rel="stylesheet" href="css/animate.css">
+	
+	<link rel="stylesheet" href="css/owl.carousel.min.css">
+	<link rel="stylesheet" href="css/owl.theme.default.min.css">
+	<link rel="stylesheet" href="css/magnific-popup.css">
+
+	<link rel="stylesheet" href="css/bootstrap-datepicker.css">
+	<link rel="stylesheet" href="css/jquery.timepicker.css">
+	     
+	<link rel="stylesheet" href="css/flaticon.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+	<%- include('./partials/header', {pageTitle:'Projects'}) %>
+
+	<%- include('./partials/wide', {pageTitle:'Projects', imgurl:'images/floor-elevated-angle.jpg'}) %>     
+
+	<header>
+		<section class="ftco-section">
+			<div class="container">
+				<div class="row justify-content-center mb-5 pb-3">
+					<div class="col-md-7 text-center heading-section ftco-animate">
+						<span class="subheading">Our work in Ontario</span>
+						<h2 class="mb-4">Latest Projects</h2>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<%- include('./partials/projectcard', {imgurl:'images/projects/midtown-auto.jpeg', header:'Storefront Signs',description:'A lit LED sign that matches the aesthetic of the business, in this case, an auto repair center. We manufacture the sign, and fit it into your business storefront.'}) %>     
+
+					</div>
+					<div class="col-md-4">
+						<%- include('./partials/projectcard', {imgurl:'images/projects/pylon.jpeg', header:'Large Scale Pylons',description:'We provide weather resistant construction and foundations that large scale business signs need to ensure quality and sturdy signs, such as this pylon.'}) %>     
+
+					</div>
+					<div class="col-md-4">
+						<%- include('./partials/projectcard', {imgurl:'images/services/concrete-foundation-pylon.jpeg', header:'Ground Sign',description:'We provide weather resistant construction and foundations that large scale business signs need to ensure quality and sturdy signs, such as this pylon.'}) %>     
+
+					</div>
+	
+					<div class="col-md-4">
+						<%- include('./partials/projectcard', {imgurl:'images/projects/pap-johns.jpeg', header:'Papa John\'s',description:'Wether you\'re an individual, small business or a large chain, we offer services and designs to fit all your needs. We are trusted by many, to provide high quality signs.'}) %>     
+
+					</div>
+					<div class="col-md-4">
+						<%- include('./partials/projectcard', {imgurl:'images/projects/wing-spot.jpeg', header:'Wing Spot',description:'Wether you\'re an individual, small business or a large chain, we offer services and designs to fit all your needs. We are trusted by many, to provide high quality signs.'}) %>     
+
+					</div>
+					<div class="col-md-4">
+						<%- include('./partials/projectcard', {imgurl:'images/projects/wings-bites.jpeg', header:'Wings & Bites',description:'Wether you\'re an individual, small business or a large chain, we offer services and designs to fit all your needs. We are trusted by many, to provide high quality signs.'}) %>     
+
+					</div>
+					<div class="col-md-4">
+						<%- include('./partials/projectcard', {imgurl:'images/projects/pookadai.jpeg', header:'Pookadai',description:'Wether you\'re an individual, small business or a large chain, we offer services and designs to fit all your needs. We are trusted by many, to provide high quality signs.'}) %>     
+
+					</div>
+					<div class="col-md-4">
+						<%- include('./partials/projectcard', {imgurl:'images/projects/spiceland.jpeg', header:'Spiceland',description:'Wether you\'re an individual, small business or a large chain, we offer services and designs to fit all your needs. We are trusted by many, to provide high quality signs.'}) %>     
+
+					</div>
+					<div class="col-md-4">
+						<%- include('./partials/projectcard', {imgurl:'images/projects/neon-sign.jpeg', header:'Construction',description:'Wether you\'re an individual, small business or a large chain, we offer services and designs to fit all your needs. We are trusted by many, to provide high quality signs.'}) %>     
+
+					</div>
+				</div>
+			</div>
+		</section>
+	
+	
+	</header>
+	<%- include('./partials/footer', {pageTitle:'Projects'}) %>     
+
+		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<%- include('./partials/modal') %>
+
+		</div>
+		
+
+		<!-- loader -->
+		<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery-migrate-3.0.1.min.js"></script>
+		<script src="js/popper.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/jquery.easing.1.3.js"></script>
+		<script src="js/jquery.waypoints.min.js"></script>
+		<script src="js/jquery.stellar.min.js"></script>
+		<script src="js/owl.carousel.min.js"></script>
+		<script src="js/jquery.magnific-popup.min.js"></script>
+		<script src="js/jquery.animateNumber.min.js"></script>
+		<script src="js/bootstrap-datepicker.js"></script>
+		<script src="js/jquery.timepicker.min.js"></script>
+		<script src="js/scrollax.min.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+		<script src="js/google-map.js"></script>
+		
+		<script src="js/main.js"></script>
+		
+	</body>
+	</html>
