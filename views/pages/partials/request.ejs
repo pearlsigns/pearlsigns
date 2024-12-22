@@ -8,7 +8,6 @@
             const authButton = document.getElementById('submitRequest');
             const name = document.getElementById('fname').value + document.getElementById('lname').value;
             const phone = document.getElementById('phone').value;
-            const service = document.getElementById('service').value;
             const message = document.getElementById('message').value;
 
             console.log(name)
@@ -17,7 +16,7 @@
             authButton.disabled = true;
             authButton.value = "Authenticating...";
             try {
-                const payload = {'name': name, 'phone':phone, 'service':service, 'message':message};
+                const payload = {'name': name, 'phone':phone, 'service':'Sign Making', 'message':message};
                 const response = await fetch('/firebase/quote', {
                     method: 'POST', // Use POST since /auth is a POST endpoint
                     headers: { 'Content-Type': 'application/json' },
@@ -32,7 +31,6 @@
                 document.getElementById('fname').value = ""; 
                 document.getElementById('lname').value = "";
                 document.getElementById('phone').value = "";
-                document.getElementById('service').value = "";
                 document.getElementById('message').value = "";
                 authButton.disabled = false;
                 authButton.value = "Request A Quote ";
