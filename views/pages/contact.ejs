@@ -63,7 +63,7 @@
 							</div>
 							<div class="col-md-12">
 								<div class="form-group">
-									<input type="submit" id="generalsubmit" value="Send Message" class="btn btn-primary py-3 px-5">
+									<input type="submit" id="generalsubmit" value="How can we help you?" class="btn btn-primary py-3 px-5">
 								</div>
 							</div>
 						</div>
@@ -148,7 +148,7 @@
 				console.log(phone)
 				// Disable the button to prevent multiple clicks
 				authButton.disabled = true;
-				authButton.value = "Authenticating...";
+				authButton.value = "Sending Message...";
 				try {
 					const payload = {'name': name, 'phone':phone, 'service':service, 'message':message};
 					const response = await fetch('/firebase/quote', {
