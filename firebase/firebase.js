@@ -26,7 +26,6 @@ const signInUser = async (email, password) => {
     return uc.user.uid;
   } catch (error) {
     console.error('Auth error:', error.message);
-    throw error;
   }
 };
 
