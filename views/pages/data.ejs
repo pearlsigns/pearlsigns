@@ -81,6 +81,7 @@
                 row.innerHTML = `<td>${id}</td>`;
                 keys.forEach(key => {
                     row.innerHTML += `<td>${data[key]}</td>`;
+                    console.log(id + " - " + data[key])
                 });
                 tbody.appendChild(row);
             });
