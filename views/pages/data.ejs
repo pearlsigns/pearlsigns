@@ -1,27 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Database</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/auth.css" />
     <style>
-        html,body{overflow-y: scroll; }
+        html,
+        body {
+            overflow-y: scroll;
+        }
+
         table {
             color: #f4f4f4;
             width: 100%;
             border-collapse: collapse;
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid #1b003a3f;
             padding: 8px;
         }
+
         th {
             background-color: #3604042a;
             text-align: left;
         }
+
+        .highlight {
+            background-color: #d1fae5;
+            /* soft green */
+            font-weight: 600;
+        }
     </style>
 </head>
+
 <body>
 
     <table id="dataTable">
@@ -35,7 +50,6 @@
 
     <script>
         generateTable = (json) => {
-            
             const table = document.getElementById('dataTable');
             const thead = table.querySelector('thead');
             const tbody = table.querySelector('tbody');
@@ -49,40 +63,48 @@
 
             // Create table headers
             const headerRow = document.createElement('tr');
-            headerRow.innerHTML = `<th>ID</th>`; // Add ID as the first column
+            headerRow.innerHTML = `<th>Date</th>`;
             keys.forEach(key => {
                 headerRow.innerHTML += `<th>${key}</th>`;
             });
             thead.appendChild(headerRow);
 
+            // Convert object to array and sort by date (newest first)
+            const sortedEntries = Object.entries(json).sort(([dateA], [dateB]) => {
+                const dA = new Date(dateA);
+                const dB = new Date(dateB);
+                return dB - dA; // Newest first
+            });
+
             // Create table rows
-            Object.keys(json).forEach(id => {
+            sortedEntries.forEach(([id, data], index) => {
                 const row = document.createElement('tr');
-                row.innerHTML = `<td>${id}</td>`; // Add ID as the first column
+                if (index === 0) row.classList.add('highlight'); // highlight the most recent entry
+                row.innerHTML = `<td>${id}</td>`;
                 keys.forEach(key => {
-                    row.innerHTML += `<td>${json[id][key]}</td>`;
+                    row.innerHTML += `<td>${data[key]}</td>`;
                 });
                 tbody.appendChild(row);
             });
         }
-            fetchData = async () => {
+
+        fetchData = async () => {
             try {
                 const response = await fetch('/firebase/requests', {
-                method: 'POST', 
-                headers: { 'Content-Type': 'application/json' }
-            });  
-                var json = await response.json();
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const json = await response.json();
                 generateTable(json);
-                //generateTable(response);
-				} catch (error) {
-					console.error('Error calling /requests:', error);
-				}
+            } catch (error) {
+                console.error('Error calling /requests:', error);
+            }
         }
-        // Generate the table on page load
+
         document.addEventListener('DOMContentLoaded', () => {
             fetchData();
         });
-
     </script>
 </body>
+
 </html>
