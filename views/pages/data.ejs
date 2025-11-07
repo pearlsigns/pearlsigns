@@ -38,12 +38,8 @@
 <body>
 
     <table id="dataTable">
-        <thead>
-            <tr>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
+        <thead></thead>
+        <tbody></tbody>
     </table>
 
     <script>
@@ -56,8 +52,20 @@
             thead.innerHTML = '';
             tbody.innerHTML = '';
 
-            // Extract keys for the headers
-            const keys = Object.keys(Object.values(json)[0]);
+            // ✅ Check if json is valid and not empty
+            if (!json || Object.keys(json).length === 0) {
+                console.warn("⚠ No data to display");
+                return;
+            }
+
+            // ✅ Safely get keys from the first entry
+            const first = Object.values(json)[0];
+            if (!first || typeof first !== 'object') {
+                console.error("⚠ Invalid data format", json);
+                return;
+            }
+
+            const keys = Object.keys(first);
 
             // Create table headers
             const headerRow = document.createElement('tr');
@@ -71,17 +79,16 @@
             const sortedEntries = Object.entries(json).sort(([dateA], [dateB]) => {
                 const dA = new Date(dateA);
                 const dB = new Date(dateB);
-                return dB - dA; // Newest first
+                return dB - dA; // newest first
             });
 
             // Create table rows
             sortedEntries.forEach(([id, data], index) => {
                 const row = document.createElement('tr');
-                if (index === 0) row.classList.add('highlight'); // highlight the most recent entry
+                if (index === 0) row.classList.add('highlight'); // highlight most recent
                 row.innerHTML = `<td>${id}</td>`;
                 keys.forEach(key => {
-                    row.innerHTML += `<td>${data[key]}</td>`;
-                    console.log(id + " - " + data[key])
+                    row.innerHTML += `<td>${data[key] ?? ''}</td>`; // avoid undefined crash
                 });
                 tbody.appendChild(row);
             });
@@ -94,6 +101,7 @@
                     headers: { 'Content-Type': 'application/json' }
                 });
                 const json = await response.json();
+                console.log("📦 /firebase/requests returned:", json);
                 generateTable(json);
             } catch (error) {
                 console.error('Error calling /requests:', error);
@@ -105,5 +113,4 @@
         });
     </script>
 </body>
-
 </html>
