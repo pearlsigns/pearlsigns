@@ -3,6 +3,7 @@ require('dotenv').config()
 const ejs = require('ejs');
 const firebase = require('./firebase/firebase');
 const tw = require('./twilio/twilio');
+const email = require('./firebase/sendEmail')
 const PORT = process.env.PORT || 8080;
 
 var app = express();
@@ -64,6 +65,7 @@ app.post('/firebase/quote', function(req, res){
     firebase.requestQuote(req.body.name, req.body.phone, req.body.service, req.body.message)
     const messagebuilder = "From: " + req.body.name + "\nContact: " + req.body.phone + "\nSubject: " + req.body.service + "\nMessage: " + req.body.message;  
     tw.sendMessage(messagebuilder);
+    
     res.json({"message":"ok"});
 });
 
