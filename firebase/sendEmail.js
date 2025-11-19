@@ -13,7 +13,7 @@ async function sendEmail(subject, html) {
     });
 
     const mailOptions = {
-      from: `"Quote Request" <${process.env.EMAIL_USER}>`,
+      from: `"Quote Request" <${process.env.SENDER_EMAIL}>`,
       to,
       subject,
       html,
