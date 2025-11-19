@@ -68,35 +68,43 @@ const requestQuote = async (name, phone, service, message) => {
 
     // Send email notification
     const emailBody = `
-<h2 style="font-family: Arial, sans-serif; margin-bottom: 16px;">New Quote Request</h2>
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; 
+            background: #f7f9fc; padding: 20px; border-radius: 10px;
+            border: 1px solid #e1e5ee;">
 
-<table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;">
-  <tr>
-    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Name</strong></td>
-    <td style="padding: 8px; border: 1px solid #ddd;">${name}</td>
-  </tr>
-  <tr>
-    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Phone</strong></td>
-    <td style="padding: 8px; border: 1px solid #ddd;">${phone}</td>
-  </tr>
-  <tr>
-    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Service</strong></td>
-    <td style="padding: 8px; border: 1px solid #ddd;">${service}</td>
-  </tr>
-  <tr>
-    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Message</strong></td>
-    <td style="padding: 8px; border: 1px solid #ddd;">${message}</td>
-  </tr>
-</table>
+  <h2 style="text-align: center; background: #4a90e2; color: white; 
+             padding: 12px 0; border-radius: 8px;">
+    New Quote Request
+  </h2>
 
-<p style="font-family: Arial, sans-serif; margin-top: 20px; font-size: 13px; color: #555;">
-  <em>Received at ${now}</em>
-</p>
+  <table style="width: 100%; border-collapse: collapse; margin-top: 20px; 
+                 background: white; border-radius: 8px; overflow: hidden;">
+    <tr style="background: #eef3fb;">
+      <td style="padding: 10px; font-weight: bold; border-bottom: 1px solid #ddd;">Name</td>
+      <td style="padding: 10px; border-bottom: 1px solid #ddd;">${name}</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px; font-weight: bold; background: #eef3fb; border-bottom: 1px solid #ddd;">Phone</td>
+      <td style="padding: 10px; border-bottom: 1px solid #ddd;">${phone}</td>
+    </tr>
+    <tr style="background: #eef3fb;">
+      <td style="padding: 10px; font-weight: bold; border-bottom: 1px solid #ddd;">Service</td>
+      <td style="padding: 10px; border-bottom: 1px solid #ddd;">${service}</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px; font-weight: bold; background: #eef3fb; border-bottom: 1px solid #ddd;">Message</td>
+      <td style="padding: 10px; border-bottom: 1px solid #ddd;">${message}</td>
+    </tr>
+  </table>
+
+  <p style="text-align: center; margin-top: 20px; color: #555; font-size: 13px;">
+    <em>Received at ${now}</em>
+  </p>
+</div>
     `;
 
     // change recipient as needed
     await sendEmail(
-      "pearlsign1@gmail.com",
       `New Quote Request from ${name}`,
       emailBody
     );
