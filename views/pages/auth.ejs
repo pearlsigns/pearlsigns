@@ -4,67 +4,368 @@
     <title>Dashboard</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/auth.css" />
     <style>
-        /* Layout styles for dynamic tabs */
-        .tab-navigation {
+        /* --- Base Reset & Typography --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background: #f4F6F9;
+            min-height: 100vh;
             display: flex;
-            border-bottom: 2px solid #ccc;
+            justify-content: center;
+            align-items: flex-start;
+            color: #333;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* --- Login Card Panel Styling --- */
+        #login-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 60px;
+        }
+
+        #login-container .center {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        #login-container h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        #login-container .txt_field {
+            position: relative;
             margin-bottom: 20px;
         }
+
+        #login-container .txt_field input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            outline: none;
+            font-size: 15px;
+            transition: border-color 0.2s ease;
+            background: #f8fafc;
+        }
+
+        #login-container .txt_field input:focus {
+            border-color: #007bff;
+            background: #fff;
+        }
+
+        #login-container #authButton {
+            width: 100%;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, opacity 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+        }
+
+        #login-container #authButton:hover {
+            background: #0056b3;
+        }
+
+        #login-container #authButton:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* --- Secured Dashboard Workspace Layout --- */
+        #dashboard-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            margin-top: 40px;
+        }
+
+        /* Tab Headers navigation block */
+        .tab-navigation {
+            display: flex;
+            border-bottom: 2px solid #edf2f7;
+            margin-bottom: 25px;
+            gap: 10px;
+        }
+
         .tab-button {
             background: none;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 16px;
+            font-weight: 500;
+            color: #718096;
             cursor: pointer;
             outline: none;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
         }
+
+        .tab-button:hover {
+            color: #2d3748;
+            background: #f8fafc;
+            border-radius: 6px 6px 0 0;
+        }
+
         .tab-button.active {
-            border-bottom: 3px solid #007bff;
-            font-weight: bold;
+            border-bottom-color: #007bff;
+            color: #007bff;
+            font-weight: 600;
         }
+
+        /* Content Container Boxes */
         .tab-content {
             display: none;
         }
+
         .tab-content.active {
             display: block;
         }
-        .job-form, .job-item {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 4px;
+
+        .tab-content h2 {
+            font-size: 22px;
+            color: #1a202c;
+            margin-bottom: 20px;
+            font-weight: 600;
         }
-        .job-item {
+
+        .tab-header-flex {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 20px;
         }
-        .status-open { color: green; font-weight: bold; }
-        .status-filled { color: red; font-weight: bold; }
+
+        /* --- Tab A: Inquiry Log Cards --- */
+        .inquiry-card {
+            border: 1px solid #e2e8f0; 
+            padding: 20px; 
+            margin-bottom: 15px; 
+            border-radius: 8px; 
+            background: #ffffff; 
+            text-align: left;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .inquiry-card:hover {
+            box-shadow: 0 6px 16px rgba(0,0,0,0.04);
+            border-color: #cbd5e0;
+        }
+
+        .inquiry-card-header {
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 8px;
+        }
+
+        .inquiry-card-id {
+            font-size: 12px; 
+            color: #718096;
+        }
+
+        .inquiry-card-body-text {
+            margin: 12px 0 0 0; 
+            background: #f8fafc; 
+            padding: 12px; 
+            border-left: 3px solid #007bff; 
+            font-size: 14px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .sort-btn {
+            background: #fff;
+            border: 1px solid #cbd5e0;
+            padding: 8px 14px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .sort-btn:hover {
+            background: #f8fafc;
+            border-color: #a0aec0;
+        }
+
+        /* --- Tab B: Admin Career Component Modules --- */
+        .job-form {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .job-form h3 {
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #4a5568;
+        }
+
+        .job-form input[type="text"],
+        .job-form textarea,
+        .job-form select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            background: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .job-form input:focus,
+        .job-form textarea:focus,
+        .job-form select:focus {
+            border-color: #007bff;
+        }
+
+        .job-form button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .job-form button:hover {
+            background: #218838;
+        }
+
+        #cancel-edit-btn {
+            background: #6c757d;
+            margin-left: 10px;
+        }
+        #cancel-edit-btn:hover {
+            background: #5a6268;
+        }
+
+        /* Career Row Postings */
+        .job-item {
+            background: #fff;
+            border: 1px solid #edf2f7;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .job-item:hover {
+            background: #fdfdfd;
+            border-color: #e2e8f0;
+        }
+
+        .job-item button {
+            border: 1px solid #cbd5e0;
+            background: #fff;
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .job-item button:hover {
+            background: #edf2f7;
+            color: #000;
+        }
+
+        .job-item .delete-btn {
+            background: #fff;
+            color: #dc3545;
+            border-color: #f5c6cb;
+            margin-left: 5px;
+        }
+
+        .job-item .delete-btn:hover {
+            background: #dc3545;
+            color: #fff;
+            border-color: #dc3545;
+        }
+
+        /* Status Badges */
+        .status-open {
+            background: #e6f4ea;
+            color: #137333;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-filled {
+            background: #fce8e6;
+            color: #c5221f;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- 1. LOGIN INTERFACE CONTAINER (Visible by default) -->
         <div id="login-container">
-            <div class="center" style="max-width: 400px; margin: 100px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #fff;">
-                <h1 style="text-align: center; margin-bottom: 20px;">Dashboard Login</h1>
+            <div class="center">
+                <h1>Dashboard Login</h1>
                 <form action="" method="POST" onsubmit="return false;">
-                    <div class="txt_field" style="margin-bottom: 15px;">
-                        <input id="uname" type="text" placeholder="Username" required style="width: 100%; padding: 10px;">
+                    <div class="txt_field">
+                        <input id="uname" type="text" placeholder="Username" required>
                     </div>
-                    <div class="txt_field" style="margin-bottom: 20px;">
-                        <input id="pword" type="password" placeholder="Password" required style="width: 100%; padding: 10px;">
+                    <div class="txt_field">
+                        <input id="pword" type="password" placeholder="Password" required>
                     </div>
-                    <input id="authButton" type="button" value="Login" style="width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                    <input id="authButton" type="button" value="Login">
                 </form>
             </div>
         </div>
 
         <!-- 2. SECURE DASHBOARD CONTAINER (Hidden until authenticated) -->
-        <div id="dashboard-container" style="display: none; padding: 20px 0;">
+        <div id="dashboard-container" style="display: none;">
             <!-- Tab Navigation Header -->
             <div class="tab-navigation">
                 <button id="tab-inquiries-btn" class="tab-button active" onclick="switchTab('inquiries')">Customer Inquiries</button>
@@ -73,8 +374,13 @@
 
             <!-- TAB A: INQUIRIES LIST -->
             <div id="inquiries" class="tab-content active">
-                <h2>Customer Requests &amp; Quote Inquiries</h2>
-                <div id="inquiries-list" style="margin-top: 20px;">
+                <div class="tab-header-flex">
+                    <h2>Customer Requests &amp; Quote Inquiries</h2>
+                    <button id="sort-inquiries-btn" class="sort-btn" onclick="toggleInquiriesSort()">
+                        <span>↓ Newest First</span>
+                    </button>
+                </div>
+                <div id="inquiries-list">
                     <p>Loading real-time submissions...</p>
                 </div>
             </div>
@@ -87,26 +393,25 @@
                 <div class="job-form">
                     <h3 id="form-title">Create New Job Post</h3>
                     <input type="hidden" id="job-id">
-                    <div class="txt_field" style="margin-bottom: 10px;">
-                        <input type="text" id="job-title" placeholder="Job Title" required style="width: 100%; padding: 8px;">
+                    <div class="txt_field">
+                        <input type="text" id="job-title" placeholder="Job Title" required>
                     </div>
-                    <div class="txt_field" style="margin-bottom: 10px;">
-                        <textarea id="job-desc" placeholder="Job Description" required style="width: 100%; padding: 8px; height: 100px;"></textarea>
+                    <div class="txt_field">
+                        <textarea id="job-desc" placeholder="Job Description" required></textarea>
                     </div>
-                    <div>
-                        <label for="job-status">Status: </label>
-                        <select id="job-status">
+                    <div style="margin-bottom: 15px;">
+                        <label for="job-status" style="font-size: 14px; color: #4a5568;">Status: </label>
+                        <select id="job-status" style="width: auto; display: inline-block; margin-left: 5px;">
                             <option value="open">Open</option>
                             <option value="filled">Filled</option>
                         </select>
                     </div>
-                    <br>
                     <button id="save-job-btn" onclick="saveJob()">Post Job</button>
                     <button id="cancel-edit-btn" onclick="resetJobForm()" style="display:none;">Cancel</button>
                 </div>
 
                 <!-- Existing Jobs List -->
-                <h3>Current Job Postings</h3>
+                <h3 style="font-size: 18px; color: #2c3e50; margin-bottom: 15px;">Current Job Postings</h3>
                 <div id="admin-jobs-list">
                     <p>Loading job updates...</p>
                 </div>
@@ -115,6 +420,11 @@
     </div>
 
     <script>
+        // --- Global App State Management ---
+        let allInquiries = [];       // Holds raw array of inquiries
+        let inquiriesSortNewest = true; // State tracker: true = Newest first, false = Oldest first
+        let allJobs = [];            // Holds job postings array
+
         // --- Tab Switching Logic ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -185,33 +495,71 @@
                 
                 if (!data || Object.keys(data).length === 0) {
                     container.innerHTML = '<p>No customer quote inquiries found inside database logs.</p>';
+                    allInquiries = [];
                     return;
                 }
 
-                // Render out real-time inquiry cards matching your data framework
-                container.innerHTML = Object.keys(data).map(key => {
-                    const item = data[key];
-                    return `
-                        <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 12px; border-radius: 4px; background: #fafafa; text-align: left;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                <strong>Client Name: ${item.name || 'Anonymous'}</strong>
-                                <span style="font-size: 12px; color: #777;">${key}</span>
-                            </div>
-                            <p style="margin: 2px 0;"><strong>Phone:</strong> ${item.phone || 'N/A'}</p>
-                            <p style="margin: 2px 0;"><strong>Requested Service:</strong> ${item.service || 'General'}</p>
-                            <p style="margin: 8px 0 0 0; background: #fff; padding: 8px; border-left: 3px solid #007bff; font-size: 14px;">"${item.message || ''}"</p>
-                        </div>
-                    `;
-                }).reverse().join(''); // Shows freshest inputs at the top
+                // Map database keys (timestamps) into an object array for processing
+                allInquiries = Object.keys(data).map(key => {
+                    return {
+                        id: key,
+                        ...data[key]
+                    };
+                });
+
+                // Render with current default sorting configuration (Newest First)
+                renderInquiries();
+
             } catch (err) {
                 console.error("Failed fetching submission info logs", err);
                 container.innerHTML = '<p style="color: red;">Error displaying data entries. Session expired.</p>';
             }
         }
 
-        // --- Tab B: Careers Management System Logic ---
-        let allJobs = [];
+        function renderInquiries() {
+            const container = document.getElementById('inquiries-list');
+            if (allInquiries.length === 0) {
+                container.innerHTML = '<p>No customer quote inquiries found inside database logs.</p>';
+                return;
+            }
 
+            // Copy and sort based on active configuration logic
+            let processedList = [...allInquiries];
+            processedList.sort((a, b) => {
+                // Firebase natural push-IDs are chronological strings. Comparing directly treats them like dates.
+                return inquiriesSortNewest ? b.id.localeCompare(a.id) : a.id.localeCompare(b.id);
+            });
+
+            // Rebuild container interface
+            container.innerHTML = processedList.map(item => `
+                <div class="inquiry-card">
+                    <div class="inquiry-card-header">
+                        <strong>Client Name: ${item.name || 'Anonymous'}</strong>
+                        <span class="inquiry-card-id">${item.id}</span>
+                    </div>
+                    <p style="margin: 2px 0;"><strong>Phone:</strong> ${item.phone || 'N/A'}</p>
+                    <p style="margin: 2px 0;"><strong>Requested Service:</strong> ${item.service || 'General'}</p>
+                    <p class="inquiry-card-body-text">"${item.message || ''}"</p>
+                </div>
+            `).join('');
+        }
+
+        function toggleInquiriesSort() {
+            inquiriesSortNewest = !inquiriesSortNewest;
+            
+            // Update button visual label state
+            const btnSpan = document.querySelector('#sort-inquiries-btn span');
+            if (inquiriesSortNewest) {
+                btnSpan.innerText = "↓ Newest First";
+            } else {
+                btnSpan.innerText = "↑ Oldest First";
+            }
+            
+            // Re-render items using updated layout priority configurations
+            renderInquiries();
+        }
+
+        // --- Tab B: Careers Management System Logic ---
         async function fetchAdminJobs() {
             try {
                 const response = await fetch('/api/careers');
@@ -230,14 +578,14 @@
             }
             container.innerHTML = allJobs.map(job => `
                 <div class="job-item">
-                    <div style="text-align: left;">
-                        <strong>${job.title}</strong> - 
-                        <span class="status-${job.status}">${job.status.toUpperCase()}</span>
-                        <p style="margin: 5px 0 0 0; font-size:14px; color:#555;">${job.description}</p>
+                    <div style="text-align: left; padding-right: 15px;">
+                        <strong style="font-size: 16px; color: #2d3748;">${job.title}</strong>
+                        <span class="status-${job.status}" style="margin-left: 8px;">${job.status.toUpperCase()}</span>
+                        <p style="margin: 8px 0 0 0; font-size:14px; color:#4a5568; line-height: 1.5;">${job.description}</p>
                     </div>
-                    <div>
-                        <button onclick="editJobSetup('${job.id}')" style="margin-right:5px; padding: 4px 10px; cursor: pointer;">Edit</button>
-                        <button onclick="deleteJob('${job.id}')" style="padding: 4px 10px; background:#dc3545; color:white; border:none; border-radius:3px; cursor:pointer;">Delete</button>
+                    <div style="display: flex; flex-shrink: 0;">
+                        <button onclick="editJobSetup('${job.id}')">Edit</button>
+                        <button class="delete-btn" onclick="deleteJob('${job.id}')">Delete</button>
                     </div>
                 </div>
             `).join('');
