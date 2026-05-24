@@ -418,7 +418,6 @@
 
                 <!-- Existing Jobs List -->
                 <h3 style="font-size: 18px; color: #2c3e50; margin-bottom: 15px;">Current Job Postings</h3>
-
                 <div id="admin-jobs-list">
                     <p>Loading job updates...</p>
                 </div>
@@ -613,8 +612,7 @@
             const status = document.getElementById('job-status').value;
 
             if (!title || !description) return alert("Please fill out all fields");
-            console.log(id)
-            const url = id ? `/api/careers/edit/${id}` : '/api/careers/create';
+            const url = id ? `/api/careers/update/${id}` : '/api/careers/create';
 
             try {
                 const res = await fetch(url, {
