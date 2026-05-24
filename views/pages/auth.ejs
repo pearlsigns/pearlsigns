@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Dashboard</title>
     <meta charset="UTF-8" />
@@ -105,7 +106,7 @@
             background: #ffffff;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             margin-top: 40px;
         }
 
@@ -167,36 +168,36 @@
 
         /* --- Tab A: Inquiry Log Cards --- */
         .inquiry-card {
-            border: 1px solid #e2e8f0; 
-            padding: 20px; 
-            margin-bottom: 15px; 
-            border-radius: 8px; 
-            background: #ffffff; 
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            background: #ffffff;
             text-align: left;
             transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
         }
 
         .inquiry-card:hover {
-            box-shadow: 0 6px 16px rgba(0,0,0,0.04);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
             border-color: #cbd5e0;
         }
 
         .inquiry-card-header {
-            display: flex; 
-            justify-content: space-between; 
+            display: flex;
+            justify-content: space-between;
             margin-bottom: 8px;
         }
 
         .inquiry-card-id {
-            font-size: 12px; 
+            font-size: 12px;
             color: #718096;
         }
 
         .inquiry-card-body-text {
-            margin: 12px 0 0 0; 
-            background: #f8fafc; 
-            padding: 12px; 
-            border-left: 3px solid #007bff; 
+            margin: 12px 0 0 0;
+            background: #f8fafc;
+            padding: 12px;
+            border-left: 3px solid #007bff;
             font-size: 14px;
             border-radius: 0 4px 4px 0;
         }
@@ -274,6 +275,7 @@
             background: #6c757d;
             margin-left: 10px;
         }
+
         #cancel-edit-btn:hover {
             background: #5a6268;
         }
@@ -346,6 +348,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- 1. LOGIN INTERFACE CONTAINER (Visible by default) -->
@@ -368,7 +371,8 @@
         <div id="dashboard-container" style="display: none;">
             <!-- Tab Navigation Header -->
             <div class="tab-navigation">
-                <button id="tab-inquiries-btn" class="tab-button active" onclick="switchTab('inquiries')">Customer Inquiries</button>
+                <button id="tab-inquiries-btn" class="tab-button active" onclick="switchTab('inquiries')">Customer
+                    Inquiries</button>
                 <button id="tab-admin-btn" class="tab-button" onclick="switchTab('admin')">Admin (Careers)</button>
             </div>
 
@@ -388,7 +392,7 @@
             <!-- TAB B: ADMIN (Careers Management) -->
             <div id="admin" class="tab-content">
                 <h2>Careers Management</h2>
-                
+
                 <!-- Create / Edit Form -->
                 <div class="job-form">
                     <h3 id="form-title">Create New Job Post</h3>
@@ -429,9 +433,9 @@
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
-            
+
             document.getElementById(tabId).classList.add('active');
-            
+
             if (tabId === 'inquiries') {
                 document.getElementById('tab-inquiries-btn').classList.add('active');
                 fetchInquiries();
@@ -447,29 +451,29 @@
             const uname = document.getElementById('uname').value;
             const pword = document.getElementById('pword').value;
 
-            if(!uname || !pword) {
+            if (!uname || !pword) {
                 window.alert("Fields cannot be empty");
                 return;
-            }   
+            }
             authButton.disabled = true;
             authButton.value = "Authenticating...";
 
             try {
-                const payload = {'uname': uname, 'pword': pword };
+                const payload = { 'uname': uname, 'pword': pword };
                 const response = await fetch('/firebase/auth', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
                 const user = await response.json();
-                
+
                 if (user && user.user) {
                     authButton.value = "Success!";
-                    
+
                     // Reveal dashboard and clean away login fields securely
                     document.getElementById('login-container').style.display = 'none';
                     document.getElementById('dashboard-container').style.display = 'block';
-                    
+
                     // Populate initial tab inquiries right away
                     fetchInquiries();
                 } else {
@@ -478,8 +482,8 @@
             } catch (error) {
                 console.error('Error calling /auth:', error);
                 window.alert("Authentication failed. Invalid details provided.");
-                
-                document.getElementById('uname').value = ""; 
+
+                document.getElementById('uname').value = "";
                 document.getElementById('pword').value = "";
                 authButton.disabled = false;
                 authButton.value = "Login";
@@ -492,7 +496,7 @@
             try {
                 const response = await fetch('/firebase/requests', { method: 'POST' });
                 const data = await response.json();
-                
+
                 if (!data || Object.keys(data).length === 0) {
                     container.innerHTML = '<p>No customer quote inquiries found inside database logs.</p>';
                     allInquiries = [];
@@ -523,15 +527,36 @@
                 return;
             }
 
-            // Copy and sort based on active configuration logic
+            // Copy and explicitly sort by timestamp metrics
             let processedList = [...allInquiries];
             processedList.sort((a, b) => {
-                // Firebase natural push-IDs are chronological strings. Comparing directly treats them like dates.
-                return inquiriesSortNewest ? b.id.localeCompare(a.id) : a.id.localeCompare(b.id);
+                // Fallback Strategy: Use an explicit date field if it exists, otherwise fall back to the chronological Firebase push ID
+                const dateA = a.date ? new Date(a.date) : a.id;
+                const dateB = b.date ? new Date(b.date) : b.id;
+
+                if (inquiriesSortNewest) {
+                    return dateB > dateA ? 1 : -1;
+                } else {
+                    return dateA > dateB ? 1 : -1;
+                }
             });
 
             // Rebuild container interface
             container.innerHTML = processedList.map(item => `
+        <div class="inquiry-card">
+            <div class="inquiry-card-header">
+                <strong>Client Name: ${item.name || 'Anonymous'}</strong>
+                <span class="inquiry-card-id">${item.date || item.id}</span>
+            </div>
+            <p style="margin: 2px 0;"><strong>Phone:</strong> ${item.phone || 'N/A'}</p>
+            <p style="margin: 2px 0;"><strong>Requested Service:</strong> ${item.service || 'General'}</p>
+            <p class="inquiry-card-body-text">"${item.message || ''}"</p>
+        </div>
+    `).join('');
+        }
+
+        // Rebuild container interface
+        container.innerHTML = processedList.map(item => `
                 <div class="inquiry-card">
                     <div class="inquiry-card-header">
                         <strong>Client Name: ${item.name || 'Anonymous'}</strong>
@@ -546,7 +571,7 @@
 
         function toggleInquiriesSort() {
             inquiriesSortNewest = !inquiriesSortNewest;
-            
+
             // Update button visual label state
             const btnSpan = document.querySelector('#sort-inquiries-btn span');
             if (inquiriesSortNewest) {
@@ -554,7 +579,7 @@
             } else {
                 btnSpan.innerText = "↑ Oldest First";
             }
-            
+
             // Re-render items using updated layout priority configurations
             renderInquiries();
         }
@@ -597,7 +622,7 @@
             const description = document.getElementById('job-desc').value;
             const status = document.getElementById('job-status').value;
 
-            if(!title || !description) return alert("Please fill out all fields");
+            if (!title || !description) return alert("Please fill out all fields");
 
             const url = id ? `/api/careers/edit/${id}` : '/api/careers/create';
 
@@ -607,7 +632,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ title, description, status })
                 });
-                if(res.ok) {
+                if (res.ok) {
                     resetJobForm();
                     fetchAdminJobs();
                 }
@@ -618,7 +643,7 @@
 
         function editJobSetup(id) {
             const job = allJobs.find(j => j.id === id);
-            if(!job) return;
+            if (!job) return;
 
             document.getElementById('job-id').value = job.id;
             document.getElementById('job-title').value = job.title;
@@ -642,14 +667,15 @@
         }
 
         async function deleteJob(id) {
-            if(!confirm("Are you sure you want to drop this job posting?")) return;
+            if (!confirm("Are you sure you want to drop this job posting?")) return;
             try {
                 const res = await fetch(`/api/careers/delete/${id}`, { method: 'POST' });
-                if(res.ok) fetchAdminJobs();
+                if (res.ok) fetchAdminJobs();
             } catch (err) {
                 console.error("Error deleting job", err);
             }
         }
     </script>
 </body>
+
 </html>
