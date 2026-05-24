@@ -72,7 +72,7 @@ app.post('/api/careers/create', async function (req, res) {
         res.json({ message: "Job posted successfully!" });
     } catch (error) {
         console.error("Route error creating career:", error);
-        res.status(500).json({ error: "Failed to create job post" + error });
+        res.status(500).json({ error: "Failed to create job post: " + error });
     }
 });
 
