@@ -2,6 +2,7 @@ const { initializeApp } = require("firebase/app");
 const { getAuth, signInWithEmailAndPassword } = require("firebase/auth");
 const { getDatabase, ref, set, onValue, get } = require("firebase/database");
 const { sendEmail } = require("./sendEmail")
+const { v4: uuidv4 } = require('uuid'); // Import UUID at the top
 // Firebase configuration object
 
 const firebaseConfig = {
@@ -144,10 +145,10 @@ const getCareers = async () => {
 
 const createCareer = async (title, description, status) => {
   try {
-    const careersRef = ref(database, 'careers');
+    const customId = uuidv4();
+    const careersRef = ref(database, 'careers/${customId}');
     // Generates a unique push ID under the 'careers' node
-    const newJobRef = push(careersRef);
-    await set(newJobRef, {
+    await set(careersRef, {
       title,
       description,
       status: status || 'open',
