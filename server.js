@@ -2,7 +2,6 @@ const express = require('express');
 require('dotenv').config()
 const ejs = require('ejs');
 const firebase = require('./firebase/firebase');
-const tw = require('./twilio/twilio');
 const email = require('./firebase/sendEmail')
 const PORT = process.env.PORT || 8080;
 
@@ -12,7 +11,7 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 var favicon = require('serve-favicon');
-const { Twilio } = require('twilio');
+
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 app.listen(PORT)
@@ -47,6 +46,17 @@ app.get('/project', function (req, res) {
     res.render('pages/project');
 });
 
+app.get('/careers', async function (req, res) {
+    try {
+        const jobsList = await firebase.getCareers(); 
+        res.render('pages/careers', { jobs: jobsList });
+    } catch (error) {
+        console.error("Error loading careers, showing fallback state:", error);
+        res.render('pages/careers', { jobs: [] }); 
+    }
+});
+
+
 app.get('/auth', function (req, res) {
     res.render('pages/auth');
 });
@@ -57,7 +67,7 @@ app.post('/firebase/auth', function(req, res){
 });
 
 app.post('/firebase/visit', async function(req, res){
-    firebase.updateVisits();
+    //firebase.updateVisits();
     res.json({"message": "ok"});
 });
 

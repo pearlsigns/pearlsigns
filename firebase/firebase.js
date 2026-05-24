@@ -3,6 +3,7 @@ const { getAuth, signInWithEmailAndPassword } = require("firebase/auth");
 const { getDatabase, ref, set, onValue, get } = require("firebase/database");
 const { sendEmail } = require("./sendEmail")
 // Firebase configuration object
+
 const firebaseConfig = {
   apiKey: process.env.apiKey,
   authDomain: process.env.authDomain,
@@ -121,6 +122,63 @@ const fetchData = async () => {
     return snapshot.val();
   } else return '';
 }
+// === Realtime Database Career Management Functions ===
 
+const getCareers = async () => {
+  try {
+    const careersRef = ref(database, 'careers');
+    const snapshot = await get(careersRef);
+    if (!snapshot.exists()) return [];
+
+    const data = snapshot.val();
+    // Convert Firebase's object-of-objects structure into a clean array containing IDs
+    return Object.keys(data).map(key => ({
+      id: key,
+      ...data[key]
+    })).sort((a, b) => b.createdAt - a.createdAt); // Sorts newest first
+  } catch (error) {
+    console.error('Error reading careers node:', error.message);
+    throw error;
+  }
+};
+
+const createCareer = async (title, description, status) => {
+  try {
+    const careersRef = ref(database, 'careers');
+    // Generates a unique push ID under the 'careers' node
+    const newJobRef = push(careersRef);
+    await set(newJobRef, {
+      title,
+      description,
+      status: status || 'open',
+      createdAt: Date.now()
+    });
+  } catch (error) {
+    console.error('Error creating career item:', error.message);
+    throw error;
+  }
+};
+
+const updateCareer = async (id, title, description, status) => {
+  try {
+    const jobRef = ref(database, `careers/${id}`);
+    await update(jobRef, { title, description, status });
+  } catch (error) {
+    console.error('Error updating career item:', error.message);
+    throw error;
+  }
+};
+
+const deleteCareer = async (id) => {
+  try {
+    const jobRef = ref(database, `careers/${id}`);
+    await remove(jobRef);
+  } catch (error) {
+    console.error('Error removing career item:', error.message);
+    throw error;
+  }
+};
 // Export the functions
-module.exports = { signInUser, updateVisits, requestQuote, fetchData };
+module.exports = {
+  signInUser, updateVisits, requestQuote, fetchData, getCareers, createCareer, updateCareer, deleteCareer
+};
