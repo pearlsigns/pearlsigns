@@ -84,7 +84,7 @@ app.post('/api/careers/update', async function (req, res) {
         res.json({ message: "Job updated successfully!" });
     } catch (error) {
         console.error("Route error updating career:", error);
-        res.status(500).json({ error: "Failed to update job post" });
+        res.status(500).json({ error: "Failed to update job post: " + error });
     }
 });
 
@@ -96,7 +96,7 @@ app.post('/api/careers/delete', async function (req, res) {
         res.json({ message: "Job deleted successfully!" });
     } catch (error) {
         console.error("Route error deleting career:", error);
-        res.status(500).json({ error: "Failed to delete job post" });
+        res.status(500).json({ error: "Failed to delete job post: " + error });
     }
 });
 app.post('/api/careers/deleteAll', async function (req, res) {
