@@ -149,6 +149,7 @@ const createCareer = async (title, description, status) => {
     const careersRef = ref(database, 'careers/' + customId);
     // Generates a unique push ID under the 'careers' node
     await set(careersRef, {
+      id: customId,
       title,
       description,
       status: status || 'open',
@@ -170,6 +171,15 @@ const updateCareer = async (id, title, description, status) => {
   }
 };
 
+const deleteAllCareers = async () => {
+  try {
+    const jobRef = ref(database, `careers`);
+    await remove(jobRef);
+  } catch (error) {
+    console.error('Error removing career item:', error.message);
+    throw error;
+  }
+};
 const deleteCareer = async (id) => {
   try {
     const jobRef = ref(database, `careers/${id}`);

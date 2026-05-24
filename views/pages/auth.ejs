@@ -416,6 +416,8 @@
 
                 <!-- Existing Jobs List -->
                 <h3 style="font-size: 18px; color: #2c3e50; margin-bottom: 15px;">Current Job Postings</h3>
+                <button id="cancel-edit-btn" onclick="deleteAllJobs()" style="display:none;">Cancel</button>
+
                 <div id="admin-jobs-list">
                     <p>Loading job updates...</p>
                 </div>
@@ -653,6 +655,15 @@
             document.getElementById('cancel-edit-btn').style.display = "none";
         }
 
+        async function deleteAllJobs(id) {
+            if (!confirm("Are you sure you want to drop this job posting?")) return;
+            try {
+                const res = await fetch(`/api/careers/deleteAll`, { method: 'POST' });
+                if (res.ok) fetchAdminJobs();
+            } catch (err) {
+                console.error("Error deleting job", err);
+            }
+        }
         async function deleteJob(id) {
             if (!confirm("Are you sure you want to drop this job posting?")) return;
             try {

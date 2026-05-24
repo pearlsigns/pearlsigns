@@ -99,6 +99,16 @@ app.post('/api/careers/delete', async function (req, res) {
         res.status(500).json({ error: "Failed to delete job post" });
     }
 });
+app.post('/api/careers/deleteAll', async function (req, res) {
+    try {
+        const { id } = req.body;
+        await firebase.deleteCareer(id);
+        res.json({ message: "Job deleted successfully!" });
+    } catch (error) {
+        console.error("Route error deleting career:", error);
+        res.status(500).json({ error: "Failed to delete job post" });
+    }
+});
 
 
 app.get('/auth', function (req, res) {
