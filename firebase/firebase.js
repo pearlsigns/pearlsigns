@@ -1,6 +1,6 @@
 const { initializeApp } = require("firebase/app");
 const { getAuth, signInWithEmailAndPassword } = require("firebase/auth");
-const { getDatabase, ref, set, onValue, get } = require("firebase/database");
+const { getDatabase, ref, set, update,remove, onValue, get } = require("firebase/database");
 const { sendEmail } = require("./sendEmail")
 const { v4: uuidv4 } = require('uuid'); // Import UUID at the top
 // Firebase configuration object
@@ -174,7 +174,7 @@ const updateCareer = async (id, title, description, status) => {
 const deleteAllCareers = async () => {
   try {
     const jobRef = ref(database, "careers");
-    await set(jobRef, {});
+    await remove(jobRef);
   } catch (error) {
     console.error('Error removing career item:', error.message);
     throw error;
@@ -183,7 +183,7 @@ const deleteAllCareers = async () => {
 const deleteCareer = async (id) => {
   try {
     const jobRef = ref(database, "careers/" + id);
-    await set(jobRef, {});
+    await remove(jobRef);
   } catch (error) {
     console.error('Error removing career item:', error.message);
     throw error;
