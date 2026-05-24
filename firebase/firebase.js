@@ -182,7 +182,7 @@ const deleteAllCareers = async () => {
 };
 const deleteCareer = async (id) => {
   try {
-    const jobRef = ref(database, `careers/${id}`);
+    const jobRef = ref(database, "careers/" + id);
     await set(jobRef, {});
   } catch (error) {
     console.error('Error removing career item:', error.message);
