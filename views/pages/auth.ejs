@@ -612,13 +612,13 @@
             const status = document.getElementById('job-status').value;
 
             if (!title || !description) return alert("Please fill out all fields");
-            const url = id ? `/api/careers/update/${id}` : '/api/careers/create';
+            const url = id ? `/api/careers/update` : '/api/careers/create';
 
             try {
                 const res = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ title, description, status })
+                    body: JSON.stringify({ id, title, description, status })
                 });
                 if (res.ok) {
                     resetJobForm();
@@ -666,7 +666,7 @@
         async function deleteJob(id) {
             if (!confirm("Are you sure you want to drop this job posting?")) return;
             try {
-                const res = await fetch(`/api/careers/delete/${id}`, { method: 'POST' });
+                const res = await fetch(`/api/careers/delete`, { body: id, method: 'POST' });
                 if (res.ok) fetchAdminJobs();
             } catch (err) {
                 console.error("Error deleting job", err);
