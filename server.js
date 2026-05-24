@@ -102,7 +102,7 @@ app.post('/api/careers/delete', async function (req, res) {
 app.post('/api/careers/deleteAll', async function (req, res) {
     try {
         const { id } = req.body;
-        await firebase.deleteCareer(id);
+        await firebase.deleteAllCareers();
         res.json({ message: "Job deleted successfully!" });
     } catch (error) {
         console.error("Route error deleting career:", error);

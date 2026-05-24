@@ -173,7 +173,7 @@ const updateCareer = async (id, title, description, status) => {
 
 const deleteAllCareers = async () => {
   try {
-    const jobRef = ref(database, `careers`);
+    const jobRef = ref(database, "careers");
     await set(jobRef, {});
   } catch (error) {
     console.error('Error removing career item:', error.message);
@@ -191,5 +191,5 @@ const deleteCareer = async (id) => {
 };
 // Export the functions
 module.exports = {
-  signInUser, updateVisits, requestQuote, fetchData, getCareers, createCareer, updateCareer, deleteCareer
+  signInUser, updateVisits, requestQuote, fetchData, getCareers, createCareer, updateCareer, deleteCareer, deleteAllCareers
 };
