@@ -573,8 +573,8 @@
         // --- Tab B: Careers Management System Logic ---
         async function fetchAdminJobs() {
             try {
-                const response = await fetch('/api/careers');
-                allJobs = await response.json();
+                const allJobs = await firebase.getCareers();
+                //allJobs = await response.json();
                 renderAdminJobs();
             } catch (err) {
                 console.error("Failed fetching jobs", err);
