@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/auth.css" />
     <style>
-        /* Simple layout styles for tabs */
+        /* Layout styles for dynamic tabs */
         .tab-navigation {
             display: flex;
             border-bottom: 2px solid #ccc;
@@ -47,63 +47,69 @@
 </head>
 <body>
     <div class="container">
-        <!-- Tab Navigation Navigation -->
-        <div class="tab-navigation">
-            <button class="tab-button active" onclick="switchTab('inquiries')">Inquiries</button>
-            <button class="tab-button" onclick="switchTab('admin')">Admin (Careers)</button>
-        </div>
-
-        <!-- TAB 1: INQUIRIES (Your Original Content) -->
-        <div id="inquiries" class="tab-content active">
-            <div class="center">
-                <h1>Login / Inquiry Action</h1>
+        <!-- 1. LOGIN INTERFACE CONTAINER (Visible by default) -->
+        <div id="login-container">
+            <div class="center" style="max-width: 400px; margin: 100px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #fff;">
+                <h1 style="text-align: center; margin-bottom: 20px;">Dashboard Login</h1>
                 <form action="" method="POST" onsubmit="return false;">
-                    <div class="txt_field">
-                        <input id="uname" type="text" name="text" required>
-                        <span></span>
-                        <label>Username</label>
+                    <div class="txt_field" style="margin-bottom: 15px;">
+                        <input id="uname" type="text" placeholder="Username" required style="width: 100%; padding: 10px;">
                     </div>
-                    <div class="txt_field">
-                        <input id="pword" type="password" name="password" required>
-                        <span></span>
-                        <label>Password</label>
+                    <div class="txt_field" style="margin-bottom: 20px;">
+                        <input id="pword" type="password" placeholder="Password" required style="width: 100%; padding: 10px;">
                     </div>
-                    <input id="authButton" type="button" value="Login">
+                    <input id="authButton" type="button" value="Login" style="width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
                 </form>
             </div>
         </div>
 
-        <!-- TAB 2: ADMIN (Careers Management) -->
-        <div id="admin" class="tab-content">
-            <h2>Careers Management</h2>
-            
-            <!-- Create / Edit Form -->
-            <div class="job-form">
-                <h3 id="form-title">Create New Job Post</h3>
-                <input type="hidden" id="job-id">
-                <div class="txt_field">
-                    <input type="text" id="job-title" placeholder="Job Title" required>
-                </div>
-                <div class="txt_field">
-                    <textarea id="job-desc" placeholder="Job Description" required></textarea>
-                </div>
-                <div>
-                    <label for="job-status">Status: </label>
-                    <select id="job-status">
-                        <option value="open">Open</option>
-                        <option value="filled">Filled</option>
-                    </select>
-                </div>
-                <br>
-                <button id="save-job-btn" onclick="saveJob()">Post Job</button>
-                <button id="cancel-edit-btn" onclick="resetJobForm()" style="display:none;">Cancel</button>
+        <!-- 2. SECURE DASHBOARD CONTAINER (Hidden until authenticated) -->
+        <div id="dashboard-container" style="display: none; padding: 20px 0;">
+            <!-- Tab Navigation Header -->
+            <div class="tab-navigation">
+                <button id="tab-inquiries-btn" class="tab-button active" onclick="switchTab('inquiries')">Customer Inquiries</button>
+                <button id="tab-admin-btn" class="tab-button" onclick="switchTab('admin')">Admin (Careers)</button>
             </div>
 
-            <!-- Existing Jobs List -->
-            <h3>Current Job Postings</h3>
-            <div id="admin-jobs-list">
-                <!-- JavaScript will populate jobs here dynamically -->
-                <p>Loading job updates...</p>
+            <!-- TAB A: INQUIRIES LIST -->
+            <div id="inquiries" class="tab-content active">
+                <h2>Customer Requests &amp; Quote Inquiries</h2>
+                <div id="inquiries-list" style="margin-top: 20px;">
+                    <p>Loading real-time submissions...</p>
+                </div>
+            </div>
+
+            <!-- TAB B: ADMIN (Careers Management) -->
+            <div id="admin" class="tab-content">
+                <h2>Careers Management</h2>
+                
+                <!-- Create / Edit Form -->
+                <div class="job-form">
+                    <h3 id="form-title">Create New Job Post</h3>
+                    <input type="hidden" id="job-id">
+                    <div class="txt_field" style="margin-bottom: 10px;">
+                        <input type="text" id="job-title" placeholder="Job Title" required style="width: 100%; padding: 8px;">
+                    </div>
+                    <div class="txt_field" style="margin-bottom: 10px;">
+                        <textarea id="job-desc" placeholder="Job Description" required style="width: 100%; padding: 8px; height: 100px;"></textarea>
+                    </div>
+                    <div>
+                        <label for="job-status">Status: </label>
+                        <select id="job-status">
+                            <option value="open">Open</option>
+                            <option value="filled">Filled</option>
+                        </select>
+                    </div>
+                    <br>
+                    <button id="save-job-btn" onclick="saveJob()">Post Job</button>
+                    <button id="cancel-edit-btn" onclick="resetJobForm()" style="display:none;">Cancel</button>
+                </div>
+
+                <!-- Existing Jobs List -->
+                <h3>Current Job Postings</h3>
+                <div id="admin-jobs-list">
+                    <p>Loading job updates...</p>
+                </div>
             </div>
         </div>
     </div>
@@ -115,14 +121,17 @@
             document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
             
             document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
             
-            if(tabId === 'admin') {
+            if (tabId === 'inquiries') {
+                document.getElementById('tab-inquiries-btn').classList.add('active');
+                fetchInquiries();
+            } else if (tabId === 'admin') {
+                document.getElementById('tab-admin-btn').classList.add('active');
                 fetchAdminJobs();
             }
         }
 
-        // --- Original Login Script (Retained) ---
+        // --- Authentication Event Listener ---
         document.getElementById('authButton').addEventListener('click', async () => {
             const authButton = document.getElementById('authButton');
             const uname = document.getElementById('uname').value;
@@ -143,23 +152,64 @@
                     body: JSON.stringify(payload)
                 });
                 const user = await response.json();
-                if(user != null) {
+                
+                if (user && user.user) {
                     authButton.value = "Success!";
-                    window.location.href = '/firebase/data';
+                    
+                    // Reveal dashboard and clean away login fields securely
+                    document.getElementById('login-container').style.display = 'none';
+                    document.getElementById('dashboard-container').style.display = 'block';
+                    
+                    // Populate initial tab inquiries right away
+                    fetchInquiries();
+                } else {
+                    throw new Error("Invalid admin verification response structure");
                 }
             } catch (error) {
                 console.error('Error calling /auth:', error);
-                window.alert("Login failed");
-                setTimeout(() => {
-                    document.getElementById('uname').value = ""; 
-                    document.getElementById('pword').value = "";
-                    authButton.disabled = false;
-                    authButton.value = "Login";
-                }, 2000);
+                window.alert("Authentication failed. Invalid details provided.");
+                
+                document.getElementById('uname').value = ""; 
+                document.getElementById('pword').value = "";
+                authButton.disabled = false;
+                authButton.value = "Login";
             }
         });
 
-        // --- Careers Management System Logic ---
+        // --- Tab A: Inquiries Data Management System ---
+        async function fetchInquiries() {
+            const container = document.getElementById('inquiries-list');
+            try {
+                const response = await fetch('/firebase/requests', { method: 'POST' });
+                const data = await response.json();
+                
+                if (!data || Object.keys(data).length === 0) {
+                    container.innerHTML = '<p>No customer quote inquiries found inside database logs.</p>';
+                    return;
+                }
+
+                // Render out real-time inquiry cards matching your data framework
+                container.innerHTML = Object.keys(data).map(key => {
+                    const item = data[key];
+                    return `
+                        <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 12px; border-radius: 4px; background: #fafafa; text-align: left;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <strong>Client Name: ${item.name || 'Anonymous'}</strong>
+                                <span style="font-size: 12px; color: #777;">${key}</span>
+                            </div>
+                            <p style="margin: 2px 0;"><strong>Phone:</strong> ${item.phone || 'N/A'}</p>
+                            <p style="margin: 2px 0;"><strong>Requested Service:</strong> ${item.service || 'General'}</p>
+                            <p style="margin: 8px 0 0 0; background: #fff; padding: 8px; border-left: 3px solid #007bff; font-size: 14px;">"${item.message || ''}"</p>
+                        </div>
+                    `;
+                }).reverse().join(''); // Shows freshest inputs at the top
+            } catch (err) {
+                console.error("Failed fetching submission info logs", err);
+                container.innerHTML = '<p style="color: red;">Error displaying data entries. Session expired.</p>';
+            }
+        }
+
+        // --- Tab B: Careers Management System Logic ---
         let allJobs = [];
 
         async function fetchAdminJobs() {
@@ -180,14 +230,14 @@
             }
             container.innerHTML = allJobs.map(job => `
                 <div class="job-item">
-                    <div>
+                    <div style="text-align: left;">
                         <strong>${job.title}</strong> - 
                         <span class="status-${job.status}">${job.status.toUpperCase()}</span>
                         <p style="margin: 5px 0 0 0; font-size:14px; color:#555;">${job.description}</p>
                     </div>
                     <div>
-                        <button onclick="editJobSetup('${job.id}')">Edit</button>
-                        <button onclick="deleteJob('${job.id}')">Delete</button>
+                        <button onclick="editJobSetup('${job.id}')" style="margin-right:5px; padding: 4px 10px; cursor: pointer;">Edit</button>
+                        <button onclick="deleteJob('${job.id}')" style="padding: 4px 10px; background:#dc3545; color:white; border:none; border-radius:3px; cursor:pointer;">Delete</button>
                     </div>
                 </div>
             `).join('');
@@ -202,11 +252,10 @@
             if(!title || !description) return alert("Please fill out all fields");
 
             const url = id ? `/api/careers/edit/${id}` : '/api/careers/create';
-            const method = 'POST';
 
             try {
                 const res = await fetch(url, {
-                    method: method,
+                    method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ title, description, status })
                 });
