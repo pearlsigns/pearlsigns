@@ -575,7 +575,7 @@
             try {
                 const response = await fetch('/careers/list');
                 console.log(response)
-                allJobs = await response.json();
+                allJobs = (await response.json())?.jobs;;
                 renderAdminJobs();
             } catch (err) {
                 console.error("Failed fetching jobs", err);
