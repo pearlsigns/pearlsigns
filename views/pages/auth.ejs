@@ -531,7 +531,7 @@
             let processedList = [...allInquiries];
             processedList.sort((a, b) => {
                 // Fallback Strategy: Use an explicit date field if it exists, otherwise fall back to the chronological Firebase push ID
-                const dateA = a.date ? new Date(a.date) : a.id;
+                const dateA = a. ? new Date(a.date) : a.id;
                 const dateB = b.date ? new Date(b.date) : b.id;
 
                 if (inquiriesSortNewest) {

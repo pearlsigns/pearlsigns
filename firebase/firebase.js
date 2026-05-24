@@ -61,9 +61,9 @@ const requestQuoteOld = (name, phone, service, message) => {
 // ✅ UPDATED requestQuote function
 const requestQuote = async (name, phone, service, message) => {
   try {
-    const now = new Date().toString();
-    const quotesRef = ref(database, 'requests/' + now);
-    const entry = { name, phone, service, message };
+    const date = new Date().toString();
+    const quotesRef = ref(database, 'requests/' + uuidv4());
+    const entry = { name, phone, service, message, date };
 
     // Save to Firebase
     await set(quotesRef, entry);
@@ -146,7 +146,7 @@ const getCareers = async () => {
 const createCareer = async (title, description, status) => {
   try {
     const customId = uuidv4();
-    const careersRef = ref(database, 'careers/${customId}');
+    const careersRef = ref(database, 'careers/' + customId);
     // Generates a unique push ID under the 'careers' node
     await set(careersRef, {
       title,
