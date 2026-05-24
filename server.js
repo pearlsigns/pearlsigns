@@ -61,7 +61,7 @@ app.get('/api/careers/list', async function (req, res) {
         res.json({ jobs: jobsList });
     } catch (error) {
         console.error("Error loading careers, showing fallback state:", error);
-        res.status(500).json({ error: "Failed to create job post" });
+        res.status(500).json({ error: "Failed to fetch job posts" });
     }
 });
 
@@ -72,7 +72,7 @@ app.post('/api/careers/create', async function (req, res) {
         res.json({ message: "Job posted successfully!" });
     } catch (error) {
         console.error("Route error creating career:", error);
-        res.status(500).json({ error: "Failed to create job post" });
+        res.status(500).json({ error: "Failed to create job post" + error });
     }
 });
 
