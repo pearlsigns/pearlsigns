@@ -555,20 +555,6 @@
     `).join('');
         }
 
-        // Rebuild container interface
-        container.innerHTML = processedList.map(item => `
-                <div class="inquiry-card">
-                    <div class="inquiry-card-header">
-                        <strong>Client Name: ${item.name || 'Anonymous'}</strong>
-                        <span class="inquiry-card-id">${item.id}</span>
-                    </div>
-                    <p style="margin: 2px 0;"><strong>Phone:</strong> ${item.phone || 'N/A'}</p>
-                    <p style="margin: 2px 0;"><strong>Requested Service:</strong> ${item.service || 'General'}</p>
-                    <p class="inquiry-card-body-text">"${item.message || ''}"</p>
-                </div>
-            `).join('');
-        }
-
         function toggleInquiriesSort() {
             inquiriesSortNewest = !inquiriesSortNewest;
 
