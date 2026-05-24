@@ -43,31 +43,6 @@
         }
         .status-open { color: green; font-weight: bold; }
         .status-filled { color: red; font-weight: bold; }
-        
-        /* Utility styles for controls */
-        .tab-header-flex {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .sort-btn {
-            background: #fff;
-            border: 1px solid #cbd5e0;
-            padding: 8px 14px;
-            font-size: 14px;
-            font-weight: 500;
-            border-radius: 6px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-        }
-        .sort-btn:hover {
-            background: #f8fafc;
-            border-color: #a0aec0;
-        }
     </style>
 </head>
 <body>
@@ -98,12 +73,7 @@
 
             <!-- TAB A: INQUIRIES LIST -->
             <div id="inquiries" class="tab-content active">
-                <div class="tab-header-flex">
-                    <h2 style="margin: 0;">Customer Requests &amp; Quote Inquiries</h2>
-                    <button id="sort-inquiries-btn" class="sort-btn" onclick="toggleInquiriesSort()">
-                        <span>↓ Newest First</span>
-                    </button>
-                </div>
+                <h2>Customer Requests &amp; Quote Inquiries</h2>
                 <div id="inquiries-list" style="margin-top: 20px;">
                     <p>Loading real-time submissions...</p>
                 </div>
@@ -145,11 +115,6 @@
     </div>
 
     <script>
-        // --- Global App State Management ---
-        let allInquiries = [];       // Holds raw array of inquiries
-        let inquiriesSortNewest = true; // State tracker: true = Newest first, false = Oldest first
-        let allJobs = [];            // Holds job postings array
-
         // --- Tab Switching Logic ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -220,71 +185,33 @@
                 
                 if (!data || Object.keys(data).length === 0) {
                     container.innerHTML = '<p>No customer quote inquiries found inside database logs.</p>';
-                    allInquiries = [];
                     return;
                 }
 
-                // Map database keys (timestamps) into an object array for processing
-                allInquiries = Object.keys(data).map(key => {
-                    return {
-                        id: key,
-                        ...data[key]
-                    };
-                });
-
-                // Render with current default sorting configuration (Newest First)
-                renderInquiries();
-
+                // Render out real-time inquiry cards matching your data framework
+                container.innerHTML = Object.keys(data).map(key => {
+                    const item = data[key];
+                    return `
+                        <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 12px; border-radius: 4px; background: #fafafa; text-align: left;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <strong>Client Name: ${item.name || 'Anonymous'}</strong>
+                                <span style="font-size: 12px; color: #777;">${key}</span>
+                            </div>
+                            <p style="margin: 2px 0;"><strong>Phone:</strong> ${item.phone || 'N/A'}</p>
+                            <p style="margin: 2px 0;"><strong>Requested Service:</strong> ${item.service || 'General'}</p>
+                            <p style="margin: 8px 0 0 0; background: #fff; padding: 8px; border-left: 3px solid #007bff; font-size: 14px;">"${item.message || ''}"</p>
+                        </div>
+                    `;
+                }).reverse().join(''); // Shows freshest inputs at the top
             } catch (err) {
                 console.error("Failed fetching submission info logs", err);
                 container.innerHTML = '<p style="color: red;">Error displaying data entries. Session expired.</p>';
             }
         }
 
-        function renderInquiries() {
-            const container = document.getElementById('inquiries-list');
-            if (allInquiries.length === 0) {
-                container.innerHTML = '<p>No customer quote inquiries found inside database logs.</p>';
-                return;
-            }
-
-            // Copy and sort based on active configuration logic
-            let processedList = [...allInquiries];
-            processedList.sort((a, b) => {
-                // Firebase natural push-IDs are chronological strings. Comparing directly treats them like dates.
-                return inquiriesSortNewest ? b.id.localeCompare(a.id) : a.id.localeCompare(b.id);
-            });
-
-            // Rebuild container interface
-            container.innerHTML = processedList.map(item => `
-                <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 12px; border-radius: 4px; background: #fafafa; text-align: left;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                        <strong>Client Name: ${item.name || 'Anonymous'}</strong>
-                        <span style="font-size: 12px; color: #777;">${item.id}</span>
-                    </div>
-                    <p style="margin: 2px 0;"><strong>Phone:</strong> ${item.phone || 'N/A'}</p>
-                    <p style="margin: 2px 0;"><strong>Requested Service:</strong> ${item.service || 'General'}</p>
-                    <p style="margin: 8px 0 0 0; background: #fff; padding: 8px; border-left: 3px solid #007bff; font-size: 14px;">"${item.message || ''}"</p>
-                </div>
-            `).join('');
-        }
-
-        function toggleInquiriesSort() {
-            inquiriesSortNewest = !inquiriesSortNewest;
-            
-            // Update button visual label state
-            const btnSpan = document.querySelector('#sort-inquiries-btn span');
-            if (inquiriesSortNewest) {
-                btnSpan.innerText = "↓ Newest First";
-            } else {
-                btnSpan.innerText = "↑ Oldest First";
-            }
-            
-            // Re-render items using updated layout priority configurations
-            renderInquiries();
-        }
-
         // --- Tab B: Careers Management System Logic ---
+        let allJobs = [];
+
         async function fetchAdminJobs() {
             try {
                 const response = await fetch('/api/careers');
