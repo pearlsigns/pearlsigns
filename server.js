@@ -55,6 +55,15 @@ app.get('/careers', async function (req, res) {
         res.render('pages/careers', { jobs: [] });
     }
 });
+app.get('/careers/list', async function (req, res) {
+    try {
+        const jobsList = await firebase.getCareers();
+        res.json({ jobs: jobsList });
+    } catch (error) {
+        console.error("Error loading careers, showing fallback state:", error);
+        res.status(500).json({ error: "Failed to create job post" });
+    }
+});
 
 app.post('/api/careers/create', async function (req, res) {
     try {
