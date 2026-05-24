@@ -163,8 +163,8 @@ const createCareer = async (title, description, status) => {
 
 const updateCareer = async (id, title, description, status) => {
   try {
-    const jobRef = ref(database, `careers/${id}`);
-    await update(jobRef, { title, description, status });
+    const jobRef = ref(database, "careers/" + id);
+    await update(jobRef, { id, title, description, status });
   } catch (error) {
     console.error('Error updating career item:', error.message);
     throw error;
@@ -183,7 +183,7 @@ const deleteAllCareers = async () => {
 const deleteCareer = async (id) => {
   try {
     const jobRef = ref(database, `careers/${id}`);
-    await set(jobRef,  {});
+    await set(jobRef, {});
   } catch (error) {
     console.error('Error removing career item:', error.message);
     throw error;
