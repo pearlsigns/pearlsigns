@@ -55,7 +55,7 @@ app.get('/careers', async function (req, res) {
         res.render('pages/careers', { jobs: [] });
     }
 });
-app.get('/careers/list', async function (req, res) {
+app.get('/api/careers/list', async function (req, res) {
     try {
         const jobsList = await firebase.getCareers();
         res.json({ jobs: jobsList });

@@ -573,7 +573,7 @@
         // --- Tab B: Careers Management System Logic ---
         async function fetchAdminJobs() {
             try {
-                const response = await fetch('/careers/list');
+                const response = await fetch('/api/careers/list');
                 console.log(response)
                 allJobs = (await response.json())?.jobs;;
                 renderAdminJobs();
